@@ -31,6 +31,19 @@ ko.bindingHandlers['koGrid'] = (function () {
                 headerTemplate: grid.config.headerTemplate,
                 headerCellTemplate: grid.config.headerCellTemplate,
                 footerTemplate: grid.config.footerTemplate,
+
+                headerGroupContainerContainerTemplate: grid.config.headerGroupContainerContainerTemplate,
+                headerGroupContainerTemplate: grid.config.headerGroupContainerTemplate,
+                headerGroupFooterTemplate: grid.config.headerGroupFooterTemplate,
+                headerSelectionTemplate: grid.config.headerSelectionTemplate,
+                headerFilterTemplate: grid.config.headerFilterTemplate,
+                headerColumnTemplate: grid.config.headerColumnTemplate,
+
+                rowIndexCellTemplate: grid.config.rowIndexCellTemplate,
+                selectionCellTemplate: grid.config.selectionCellTemplate,
+                baseCellTemplate: grid.config.baseCellTemplate,
+                rowContainerTemplate: grid.config.rowContainerTemplate,
+
                 columns: grid.columns(),
                 showFilter: grid.config.allowFiltering,
                 disableTextSelection: grid.config.disableTextSelection,

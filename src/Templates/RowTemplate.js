@@ -2,7 +2,7 @@
     var $row,
         $b = $("<div></div>"),
         _f = kg.utils.printf,
-        _t = kg.templateManager.getTemplate,
+        _t = kg.templateManager.getTemplateFromDom,
         cols = options.columns;
 
     $row = $(_t(options.rowContainerTemplate) || '<div data-bind="kgRow: $data, click: $data.toggleSelected, css: { \'kgSelected\': $data.selected }"></div>').appendTo($b);
@@ -11,7 +11,7 @@
 
         // check for the Selection Column
         if (col.field === '__kg_selected__') {
-            $row.append(_f(_t(options.selectedCellTemplate) || 
+            $row.append(_f(_t(options.selectionCellTemplate) || 
                 '<div class="kgSelectionCell" data-bind="kgCell: { value: \'{0}\' } ">' + 
                 '  <input type="checkbox" data-bind="checked: $data.selected" />' +
                 '</div>', col.field));

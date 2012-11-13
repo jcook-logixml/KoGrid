@@ -1,7 +1,7 @@
 ﻿kg.templates.generateHeaderTemplate = function (options) {
 	var $row,
 		$b = $("<div></div>"),
-		_t = kg.templateManager.getTemplate,
+		_t = kg.templateManager.getTemplateFromDom,
 		_f = kg.utils.printf,
         cols = options.columns;
 
@@ -71,14 +71,14 @@
                 $hgcc.append(_f(_t(options.headerGroupContainerTemplate) || '<div class="kgHeaderGroupContainer" data-bind="style: { width: $parent.headerGroups()[\'{0}\'].width() + \'px\', left: $parent.headerGroups()[\'{0}\'].margin() + \'px\' }" style="position: absolute; text-align: center;">{0}</div>',group.columns[0].headerGroup ? group.columns[0].headerGroup : ""));
             }
         });
-        $row = $('<div style="position: absolute; line-height: 30px; height 30px; top: 31px; "></div>').appendTo($b);
+        $row = $(_t(options.headerGroupFooterTemplate) || '<div style="position: absolute; line-height: 30px; height 30px; top: 31px; "></div>').appendTo($b);
     } else {
     	$row = $("<div></div>").appendTo($b);
     }
     
     kg.utils.forEach(cols, function (col) {
         if (col.field === '__kg_selected__') {
-            $row.append(_f(_t(options.headerSelectedTemplate) || '<div class="kgSelectionCell" data-bind="kgHeader: { value: \'{0}\' }, style: { width: $parent.columns()[{2}].width() + \'px\'}, css: { \'kgNoSort\': {1} }">' +
+            $row.append(_f(_t(options.headerSelectionTemplate) || '<div class="kgSelectionCell" data-bind="kgHeader: { value: \'{0}\' }, style: { width: $parent.columns()[{2}].width() + \'px\'}, css: { \'kgNoSort\': {1} }">' +
             	'  <input type="checkbox" data-bind="visible: $parent.isMultiSelect, checked: $parent.toggleSelectAll"/>' +
             	'</div>', col.field, !col.allowSort, col.index));
         } else if (col.field === 'rowIndex' &&  options.showFilter) {

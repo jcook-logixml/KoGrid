@@ -5,13 +5,14 @@
 //  row:
 //      rowContainerTemplate
 //      baseCellTemplate
-//      selectedCellTemplate
+//      selectionCellTemplate
 //      rowIndexCellTemplate
 //      
 //  header:
 //      headerGroupContainerContainerTemplate
 //      headerGroupContainerTemplate
-//      headerSelectedTemplate
+//      headerGroupFooterTemplate
+//      headerSelectionTemplate
 //      headerFilterTemplate
 //      headerColumnTemplate
 
