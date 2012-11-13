@@ -33,30 +33,23 @@
     endsWith: function (str, suffix) {
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
     },
+
+    printf: function (str, data) {
+        var args = arguments;
+        return str.replace(/{(\d+)}/g, function(match, number) {
+            number = parseInt(number,10); 
+            return args[number+1] !== undefined
+                ? args[number+1]
+                : match
+            ;
+        });
+    },
     
     StringBuilder: function () {
         var strArr = [];
         
-        this.append = function (str, data) {
-            var len = arguments.length,
-                intMatch = 0,
-                strMatch = '{0}',
-                i = 1;
-
-            if (len > 1) { // they provided data
-                while (i < len) {
-
-                    //apparently string.replace only works on one match at a time
-                    //so, loop through the string and hit all matches
-                    while (str.indexOf(strMatch) !== -1) {
-                        str = str.replace(strMatch, arguments[i]);
-                    }
-                    i++;
-                    intMatch = i - 1;
-                    strMatch = "{" + intMatch.toString() + "}";
-                }
-            }
-            strArr.push(str);
+        this.append = function (str) {
+            strArr.push(kg.utils.printf.apply(this, arguments));
         };
 
         this.toString = function () {
