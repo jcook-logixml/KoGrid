@@ -1,5 +1,8 @@
 ﻿kg.templates.generateHeaderTemplate = function (options) {
-    var b = new kg.utils.StringBuilder(),
+	var $row,
+		$b = $("<div></div>"),
+		_t = kg.templateManager.getTemplate,
+		_f = kg.utils.printf,
         cols = options.columns;
 
     var hasHeaderGroups = false;
@@ -62,33 +65,31 @@
 
     if (hasHeaderGroups) {
         options.headerGroups(headerGroups);
-        b.append('<div style="position: absolute; line-height: 30px; height: 30px; top: 0px; left:0px; right: 17px; ">');
+        var $hgcc = $(_f(_t(options.headerGroupContainerContainerTemplate) || '<div style="position: absolute; line-height: 30px; height: 30px; top: 0px; left:0px; right: 17px; "></div>')).appendTo($b);
         kg.utils.forIn(headerGroups, function (group) {
             if (group.columns.length > 0) {
-                b.append('<div class="kgHeaderGroupContainer" data-bind="style: { width: $parent.headerGroups()[\'{0}\'].width() + \'px\', left: $parent.headerGroups()[\'{0}\'].margin() + \'px\' }" style="position: absolute; text-align: center;">{0}</div>',group.columns[0].headerGroup ? group.columns[0].headerGroup : "");
+                $hgcc.append(_f(_t(options.headerGroupContainerTemplate) || '<div class="kgHeaderGroupContainer" data-bind="style: { width: $parent.headerGroups()[\'{0}\'].width() + \'px\', left: $parent.headerGroups()[\'{0}\'].margin() + \'px\' }" style="position: absolute; text-align: center;">{0}</div>',group.columns[0].headerGroup ? group.columns[0].headerGroup : ""));
             }
         });
-        b.append('</div>');
-        b.append('<div style="position: absolute; line-height: 30px; height 30px; top: 31px; ">');
+        $row = $('<div style="position: absolute; line-height: 30px; height 30px; top: 31px; "></div>').appendTo($b);
+    } else {
+    	$row = $("<div></div>").appendTo($b);
     }
     
     kg.utils.forEach(cols, function (col) {
         if (col.field === '__kg_selected__') {
-            b.append('<div class="kgSelectionCell" data-bind="kgHeader: { value: \'{0}\' }, style: { width: $parent.columns()[{2}].width() + \'px\'}, css: { \'kgNoSort\': {1} }">', col.field, !col.allowSort, col.index);
-            b.append('  <input type="checkbox" data-bind="visible: $parent.isMultiSelect, checked: $parent.toggleSelectAll"/>');
-            b.append('</div>');
+            $row.append(_f(_t(options.headerSelectedTemplate) || '<div class="kgSelectionCell" data-bind="kgHeader: { value: \'{0}\' }, style: { width: $parent.columns()[{2}].width() + \'px\'}, css: { \'kgNoSort\': {1} }">' +
+            	'  <input type="checkbox" data-bind="visible: $parent.isMultiSelect, checked: $parent.toggleSelectAll"/>' +
+            	'</div>', col.field, !col.allowSort, col.index));
         } else if (col.field === 'rowIndex' &&  options.showFilter) {
-            b.append('<div data-bind="kgHeader: { value: \'{0}\' }, css: { \'kgNoSort\': {1} }, style: { width: $parent.columns()[{2}].width() + \'px\'},">', col.field, !col.allowSort, col.index);
-            b.append('<div title="Toggle Filter" class="kgFilterBtn" data-bind="css:{\'closeBtn\' : $data.filterVisible() == true, \'openBtn\' : $data.filterVisible() == false }, click: $parent.showFilter_Click"></div>');
-            b.append('<div title="Clear Filters" class="kgFilterBtn clearBtn" data-bind="visible: $data.filterVisible, click: $parent.clearFilter_Click"></div>');
-            b.append('</div>');
+            $row.append(_f(_t(options.headerFilterTemplate) || '<div data-bind="kgHeader: { value: \'{0}\' }, css: { \'kgNoSort\': {1} }, style: { width: $parent.columns()[{2}].width() + \'px\'},">' +
+            	'	<div title="Toggle Filter" class="kgFilterBtn" data-bind="css:{\'closeBtn\' : $data.filterVisible() == true, \'openBtn\' : $data.filterVisible() == false }, click: $parent.showFilter_Click"></div>' +
+            	'	<div title="Clear Filters" class="kgFilterBtn clearBtn" data-bind="visible: $data.filterVisible, click: $parent.clearFilter_Click"></div>' +
+            	'</div>', col.field, !col.allowSort, col.index));
         } else {
-            b.append('<div style="height: 30px; border-right: {3}; " data-bind="kgHeader: { value: \'{0}\' }, style: { width: $parent.columns()[{1}].width() + \'px\'}, css: { \'kgNoSort\': {2} }">', col.field, col.index, !col.allowSort, col.index === (cols.length - 1) ? '1px solid black': '0');
-            b.append('</div>');
+            $row.append(_f(_t(options.headerColumnTemplate) || '<div style="height: 30px; border-right: {3}; " data-bind="kgHeader: { value: \'{0}\' }, style: { width: $parent.columns()[{1}].width() + \'px\'}, css: { \'kgNoSort\': {2} }"></div>', col.field, col.index, !col.allowSort, col.index === (cols.length - 1) ? '1px solid black': '0'));
         }
     });
-    if (hasHeaderGroups) {
-        b.append('</div>');
-    }
-    return b.toString();
+
+    return hasHeaderGroups ? $b.html() : $row.html();
 };

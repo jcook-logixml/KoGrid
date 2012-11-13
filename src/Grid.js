@@ -1,5 +1,19 @@
 ﻿/// <reference path="../lib/jquery-1.7.js" />
 /// <reference path="../lib/knockout-2.0.0.debug.js" />
+//
+// Available template options for template generated from templates:
+//  row:
+//      rowContainerTemplate
+//      baseCellTemplate
+//      selectedCellTemplate
+//      rowIndexCellTemplate
+//      
+//  header:
+//      headerGroupContainerContainerTemplate
+//      headerGroupContainerTemplate
+//      headerSelectedTemplate
+//      headerFilterTemplate
+//      headerColumnTemplate
 
 kg.KoGrid = function (options, gridWidth) {
     var defaults = {
@@ -8,10 +22,12 @@ kg.KoGrid = function (options, gridWidth) {
         headerRowHeight: 30,
         footerRowHeight: 55,
         filterRowHeight: 30,
+
         rowTemplate: 'kgRowTemplate',
         headerTemplate: 'kgHeaderRowTemplate',
         headerCellTemplate: 'kgHeaderCellTemplate',
         footerTemplate: 'kgFooterTemplate',
+
         footerVisible: ko.observable(true),
         canSelectRows: true,
         autogenerateColumns: true,

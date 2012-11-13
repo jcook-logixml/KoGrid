@@ -1,22 +1,26 @@
 ﻿kg.templates.generateRowTemplate = function (options) {
-    var b = new kg.utils.StringBuilder(),
+    var $row,
+        $b = $("<div></div>"),
+        _f = kg.utils.printf,
+        _t = kg.templateManager.getTemplate,
         cols = options.columns;
 
-    b.append('<div data-bind="kgRow: $data, click: $data.toggleSelected, css: { \'kgSelected\': $data.selected }">');
+    $row = $(_t(options.rowContainerTemplate) || '<div data-bind="kgRow: $data, click: $data.toggleSelected, css: { \'kgSelected\': $data.selected }"></div>').appendTo($b);
 
     kg.utils.forEach(cols, function (col, i) {
 
         // check for the Selection Column
         if (col.field === '__kg_selected__') {
-            b.append('<div class="kgSelectionCell" data-bind="kgCell: { value: \'{0}\' } ">', col.field);
-            b.append('  <input type="checkbox" data-bind="checked: $data.selected" />');
-            b.append('</div>');
+            $row.append(_f(_t(options.selectedCellTemplate) || 
+                '<div class="kgSelectionCell" data-bind="kgCell: { value: \'{0}\' } ">' + 
+                '  <input type="checkbox" data-bind="checked: $data.selected" />' +
+                '</div>', col.field));
         }
-        // check for RowIndex Column
+            // check for RowIndex Column
         else if (col.field === 'rowIndex') {
-            b.append('<div class="kgRowIndexCell" data-bind="kgCell: { value: \'{0}\' } "></div>', col.field);
+            $row.append(_f(_t(options.rowIndexCellTemplate) || '<div class="kgRowIndexCell" data-bind="kgCell: { value: \'{0}\' } "></div>', col.field));
         }
-        // check for a Column with a Cell Template
+            // check for a Column with a Cell Template
         else if (col.hasCellTemplate) {
             // first pull the template
             var tmpl = kg.templateManager.getTemplate(col.cellTemplate).innerHTML;
@@ -26,18 +30,16 @@
 
             // run any changes on the template for re-usable templates
             tmpl = tmpl.replace(/\$cellClass/g, col.cellClass || 'kgEmpty');
-            tmpl = tmpl.replace(/\$cellValue/g, "$data['" + col.field + "']");
+            tmpl = tmpl.replace(/\$cellValue/g, "$data." + col.field);
             tmpl = tmpl.replace(/\$cell/g, replacer);
 
-            b.append(tmpl);
+            $row.append(tmpl);
         }
-        // finally just use a basic template for the cell
+            // finally just use a basic template for the cell
         else {
-            b.append('  <div class="{0}"  data-bind="kgCell: { value: \'{1}\' } "></div>', col.cellClass || 'kgEmpty',  col.field);
+            $row.append(_f(_t(options.baseCellTemplate) || '  <div class="{0}"  data-bind="kgCell: { value: \'{1}\' } "></div>', col.cellClass || 'kgEmpty', col.field));
         }
     });
 
-    b.append('</div>');
-
-    return b.toString();
+    return $b.html();
 };
