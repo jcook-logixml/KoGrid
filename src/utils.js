@@ -6,7 +6,7 @@
             elem.id = "testDataLength";
             elem.style.visibility = "hidden";
             document.body.appendChild(elem);
-        } 
+        }
         elem.innerHTML = string;
         return elem.offsetWidth;
     },
@@ -18,6 +18,15 @@
                 action(arr[i], i);
             }
         }
+    },
+
+    sortByIndex: function (array, clone) {
+        return (clone ? array.slice() : array).sort(function (a, b) {
+            if (a.index === undefined || b.index === undefined) {
+                return 0;
+            }
+            return a.index - b.index;
+        });
     },
 
     forIn: function (obj, action) {

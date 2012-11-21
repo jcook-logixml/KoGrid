@@ -1,4 +1,4 @@
-﻿/// <reference path="../../lib/knockout-2.0.0.debug.js" />
+/// <reference path="../../lib/knockout-2.0.0.debug.js" />
 /// <reference path="../../lib/jquery-1.7.js" />
 
 ko.bindingHandlers['koGrid'] = (function () {
@@ -32,8 +32,11 @@ ko.bindingHandlers['koGrid'] = (function () {
                 headerCellTemplate: grid.config.headerCellTemplate,
                 footerTemplate: grid.config.footerTemplate,
 
+                topPanelTemplate: grid.config.topPanelTemplate,
+                viewportTemplate: grid.config.viewportTemplate,
+
                 headerGroupContainerContainerTemplate: grid.config.headerGroupContainerContainerTemplate,
-                headerGroupContainerTemplate: grid.config.headerGroupContainerTemplate,
+                headerGroupContainerTemplate: grid.config.headerGroupContainerTemplate, 
                 headerGroupFooterTemplate: grid.config.headerGroupFooterTemplate,
                 headerSelectionTemplate: grid.config.headerSelectionTemplate,
                 headerFilterTemplate: grid.config.headerFilterTemplate,
@@ -44,7 +47,8 @@ ko.bindingHandlers['koGrid'] = (function () {
                 baseCellTemplate: grid.config.baseCellTemplate,
                 rowContainerTemplate: grid.config.rowContainerTemplate,
 
-                columns: grid.columns(),
+                columns: grid.config.sortByIndex ? kg.utils.sortByIndex(grid.columns(), true) : grid.columns(),
+                sortByIndex: grid.config.sortByIndex,
                 showFilter: grid.config.allowFiltering,
                 disableTextSelection: grid.config.disableTextSelection,
                 autogenerateColumns: grid.config.autogenerateColumns,

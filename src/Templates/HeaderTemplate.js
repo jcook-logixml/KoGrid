@@ -1,9 +1,10 @@
 ﻿kg.templates.generateHeaderTemplate = function (options) {
+	console.log("generating header");
 	var $row,
 		$b = $("<div></div>"),
 		_t = kg.templateManager.getTemplateFromDom,
 		_f = kg.utils.printf,
-        cols = options.columns;
+        cols = options.columns; // sorting already applied
 
     var hasHeaderGroups = false;
     var headerGroups = { };

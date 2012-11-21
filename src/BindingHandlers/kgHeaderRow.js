@@ -1,7 +1,7 @@
 ﻿ko.bindingHandlers['kgHeaderRow'] = (function () {
 
     var buildHeaders = function (grid) {
-        var cols = grid.columns(),
+        var cols = grid.config.sortByIndex ? kg.utils.sortByIndex(grid.columns(), true) : grid.columns(),
             cell,
             headerRow = new kg.HeaderRow();
         headerRow.headerGroups = grid.headerGroups;
@@ -13,7 +13,7 @@
                 hg = hgs[col.headerGroup || i];
             }
             cell = new kg.HeaderCell(col, hg ? hgs[hg.rightHeaderGroup] : undefined, grid);
-            cell.colIndex = i;
+            cell.colIndex = col.originalIndex != undefined ? col.originalIndex : i;
 
             headerRow.headerCells.push(cell);
             headerRow.headerCellMap[col.field] = cell;

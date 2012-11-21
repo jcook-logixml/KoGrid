@@ -11,11 +11,12 @@ kg.cssBuilder = {
             gridId = grid.gridId,
             rules,
             i = 0,
-            len = grid.columns().length,
             css = new kg.utils.StringBuilder(),
             col,
             sumWidth = 0,
-            colWidth;
+            colWidth,
+            columns = grid.config.sortByIndex ? kg.utils.sortByIndex(grid.columns(), true) : grid.columns(),
+            len = columns.length;
 
         if (!$style) {
             $style = $("<style type='text/css' rel='stylesheet' />").appendTo($('head'));
@@ -29,9 +30,9 @@ kg.cssBuilder = {
         css.append(".{0} .kgHeaderScroller { line-height: {1}px; overflow: none; }", gridId, headerRowHeight);    
         
         for (; i < len; i++) {
-            col = grid.columns()[i];
+            col = columns[i];
             colWidth = col.width() - grid.elementDims.cellWdiff;
-            css.append(".{0} .col{1} { left: {2}px; right: {3}px; }", gridId, i, sumWidth, (grid.totalRowWidth() - sumWidth - col.width()));
+            css.append(".{0} .col{1} { left: {2}px; right: {3}px; }", gridId, col.originalIndex != undefined ? col.originalIndex : i, sumWidth, (grid.totalRowWidth() - sumWidth - col.width()));
             sumWidth += col.width();
         }
 
